@@ -5,6 +5,9 @@ package com.marcio.financialScheduler.model;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -18,7 +21,8 @@ class BankAccountTest {
 	
 	@BeforeAll
 	static void setup() {
-		bankAccount = new BankAccount(0L, 100.00);
+		User user = new User(0L, "name");
+		bankAccount = new BankAccount(0L, new BigDecimal(100.00).setScale(3, RoundingMode.FLOOR), user);
 	}
 
 	/**
@@ -42,6 +46,8 @@ class BankAccountTest {
 	 */
 	@Test
 	void testIsValidShouldReturnFalse() {
+		BankAccount account = new BankAccount(0L, new BigDecimal(100.00).setScale(3, RoundingMode.FLOOR), null);
+		assertFalse(account.isValid());
 		assertFalse(new BankAccount().isValid());
 	}
 
@@ -51,6 +57,13 @@ class BankAccountTest {
 	@Test
 	void testGetId() {
 		assertNotNull(bankAccount.getId());
+	}
+	
+	/**
+	 * Test method for {@link com.marcio.financialScheduler.model.BankAccount#getUser()}.
+	 */
+	void testGetUser() {
+		assertNotNull(bankAccount.getUser());
 	}
 
 	/**

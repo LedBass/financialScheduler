@@ -12,7 +12,7 @@ import javax.persistence.Id;
  * @author marcio
  *
  */
-@Entity
+@Entity(name="user")
 public class User implements Serializable {
 	
 	private static final long serialVersionUID = 4285613886958029908L;
@@ -21,25 +21,11 @@ public class User implements Serializable {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Long id;
 	private String name;
-	private BankAccount bankAccount;
 	
 	/**
 	 * Default class constructor (to be used by spring framework)
 	 */
 	public User() {}
-	
-	/**
-	 * Class constructor use this constructor if you already have 
-	 * all {@link BankAccount} object instance ready
-	 * @param id a {@link Long} with the id of the user
-	 * @param name a {@link String} with the name of the user
-	 * @param bankAccount a {@link BankAccount} instance - it will only set the BankAccount object if it's valid (if the object has at least a balance value)
-	 */
-	public User(Long id, String name, BankAccount bankAccount) {
-		this.setId(id);
-		this.setName(name);
-		this.setBankAccount(bankAccount);
-	}
 	
 	/**
 	 * Class constructor use this constructor to create an User instance 
@@ -82,22 +68,6 @@ public class User implements Serializable {
 	 */
 	private void setName(String name) {
 		this.name = name;
-	}
-
-	/**
-	 * Get the {@link BankAccount}
-	 * @return the {@link BankAccount}
-	 */
-	public BankAccount getBankAccount() {
-		return bankAccount;
-	}
-
-	/**
-	 * Set the {@link BankAccount}
-	 * @param bankAccount the {@link BankAccount}
-	 */
-	public void setBankAccount(BankAccount bankAccount) {
-		this.bankAccount = bankAccount;
 	}
 	
 	/**

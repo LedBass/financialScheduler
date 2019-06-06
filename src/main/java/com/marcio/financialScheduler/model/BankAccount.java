@@ -1,18 +1,22 @@
 package com.marcio.financialScheduler.model;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.validation.constraints.Digits;
 
 /**
  * This class represents a model of BankAccount 
  * @author marcio
  *
  */
-@Entity
+@Entity(name="bank_account")
 public class BankAccount implements Serializable {
 	
 	private static final long serialVersionUID = -6925520542499981371L;
@@ -20,7 +24,11 @@ public class BankAccount implements Serializable {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Long id;
-	private Double balance;
+	@ManyToOne
+	@JoinColumn(name="user_id")
+	private User user;
+	@Digits(integer=9, fraction=3)
+	private BigDecimal balance;
 	
 	/**
 	 * Default class constructor (it will be used by spring framework)
@@ -31,10 +39,12 @@ public class BankAccount implements Serializable {
 	 * Class constructor
 	 * @param id
 	 * @param balance
+	 * @param user
 	 */
-	public BankAccount(Long id, Double balance) {
+	public BankAccount(Long id, BigDecimal balance, User user) {
 		this.setId(id);
 		this.setBalance(balance);
+		this.setUser(user);
 	}
 	
 	/**
@@ -42,7 +52,7 @@ public class BankAccount implements Serializable {
 	 * @return <code>true</code> if, and only if, this instance has a valid {@link BankAccount#balance}, <code>false</code> otherwise
 	 */
 	public boolean isValid() {
-		return (this.getBalance() == null ? false : true);
+		return ((this.getBalance() == null ? false : true) && (this.getUser() != null));
 	}
 
 	/**
@@ -60,16 +70,30 @@ public class BankAccount implements Serializable {
 	}
 
 	/**
+	 * @return the user
+	 */
+	public User getUser() {
+		return user;
+	}
+
+	/**
+	 * @param user the user to set
+	 */
+	private void setUser(User user) {
+		this.user = user;
+	}
+
+	/**
 	 * @return the balance
 	 */
-	public Double getBalance() {
+	public BigDecimal getBalance() {
 		return balance;
 	}
 
 	/**
 	 * @param balance the balance to set
 	 */
-	public void setBalance(Double balance) {
+	public void setBalance(BigDecimal balance) {
 		this.balance = balance;
 	}
 }

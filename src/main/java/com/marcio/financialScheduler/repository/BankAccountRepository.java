@@ -6,10 +6,9 @@ package com.marcio.financialScheduler.repository;
 import org.springframework.data.repository.Repository;
 
 import com.marcio.financialScheduler.model.BankAccount;
-import com.marcio.financialScheduler.model.User;
 
 /**
- * This is a repository to work with and persist {@link User} class
+ * This is a repository to work with and persist {@link BankAccount} class
  * @author marcio
  *
  */
