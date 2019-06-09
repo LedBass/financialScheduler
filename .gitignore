@@ -24,7 +24,7 @@ HELP.md
 /nbdist/
 /.nb-gradle/
 /build/
-sbih.log
+sbih.log*
 
 ### VS Code ###
 .vscode/
