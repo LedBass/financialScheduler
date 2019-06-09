@@ -8,6 +8,10 @@ class FinancialSchedulerApplicationTests {
 
 	@Test
 	void contextLoads() {
+		FinancialSchedulerApplication.main(new String[] {
+				"--spring.main.web-environment=false",
+				"--spring.main.web-environment=true"
+		});
 	}
 
 }

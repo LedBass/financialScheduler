@@ -18,8 +18,7 @@ class UserTest {
 	
 	@BeforeAll
 	static void setup() {
-		BankAccount bankAccount = new BankAccount(0L, 100.00);
-		user = new User(0L, "name", bankAccount);
+		user = new User(0L, "name");
 	}
 
 	/**
@@ -45,24 +44,6 @@ class UserTest {
 	void testGetName() {
 		assertNotNull(user.getName());
 	}
-
-	/**
-	 * Test method for {@link com.marcio.financialScheduler.model.User#getBankAccount()}.
-	 */
-	@Test
-	void testGetBankAccount() {
-		assertNotNull(user.getBankAccount());
-	}
-
-	/**
-	 * Test method for {@link com.marcio.financialScheduler.model.User#setBankAccount(com.marcio.financialScheduler.model.BankAccount)}.
-	 */
-	@Test
-	void testSetBankAccount() {
-		User user = new User(0l, "name");
-		user.setBankAccount(null);
-		assertNull(user.getBankAccount());
-	}
 	
 	/**
 	 * Test method for {@link com.marcio.financialScheduler.model.User#isValid()}
@@ -77,9 +58,25 @@ class UserTest {
 	 * Test method for {@link com.marcio.financialScheduler.model.User#isValid()}
 	 */
 	@Test
-	void testIsValidShouldReturnfalse() {
+	void testIsValidShouldReturnFalseWithEmptyName() {
 		User user = new User(0L, "");
 		assertFalse(user.isValid());
+	}
+	
+	/**
+	 * Test method for {@link com.marcio.financialScheduler.model.User#isValid()}
+	 */
+	@Test
+	void testIsValidShouldReturnFalseWithNullName() {
+		User user = new User(0L, null);
+		assertFalse(user.isValid());
+	}
+	
+	/**
+	 * Test method for {@link com.marcio.financialScheduler.model.User#isValid()}
+	 */
+	@Test
+	void testIsValidShouldReturnFalseWithEmptyInstance() {
 		assertFalse(new User().isValid());
 	}
 }
