@@ -1,4 +1,4 @@
-# financialScheduler
+# Financial Scheduler
 
 A simple app with API interface that creates scheduled transactions.
 
