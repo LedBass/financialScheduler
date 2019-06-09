@@ -3,8 +3,10 @@
  */
 package com.marcio.financialScheduler.model;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -12,7 +14,14 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.Digits;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.marcio.financialScheduler.util.LocalDateConverterUtil;
+
+import io.swagger.annotations.ApiModelProperty;
 
 /**
  * This class represents a model of a transfer transaction
@@ -23,27 +32,53 @@ import javax.validation.constraints.Digits;
  *
  */
 @Entity(name="transaction")
-public class Transaction {
+public class Transaction implements Serializable {
+	@JsonIgnore
+	private static final long serialVersionUID = -5398868929829076969L;
 	
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@ApiModelProperty(notes="The database generated id, don't bother setting it when creating a"
+			+ " new user nor change it when updating an existing user. Better not touch")
 	private Long id;
+	
 	@ManyToOne
 	@JoinColumn(name="user_id")
+	@ApiModelProperty(notes="The user that is the owner of the transaction")
 	private User user;
+	
 	@ManyToOne
 	@JoinColumn(name="source_Account_id")
+	@ApiModelProperty(notes="The bank account that originated the transaction")
 	private BankAccount sourceAccount;
+	
 	@ManyToOne
 	@JoinColumn(name="dest_Account_id")
+	@ApiModelProperty(notes="The bank account that will receive the transaction value in the scheduled date")
 	private BankAccount destinationAccount;
+	
 	@ManyToOne
 	@JoinColumn(name="transaction_type_id")
+	@ApiModelProperty(notes="The type of transaction based on the value and the interval between the submit and scheduled days")
 	private TransactionType transactionType;
+	
 	@Digits(integer=9, fraction=3)
+	@ApiModelProperty(notes="The transaction value")
 	private BigDecimal transactionValue;
-	private LocalDate transactionSubmitDate;
-	private LocalDate transactionScheduleDate;
+	
+	@Digits(integer=9, fraction=3)
+	@ApiModelProperty(notes="The tax paid by the owner of the source account for the transaction")
+	private BigDecimal paidTransactionTax;
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	@ApiModelProperty(notes="The day of the submit of the transaction")
+	private Date transactionSubmitDate;
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	@ApiModelProperty(notes="The day that the transaction were scheduled")
+	private Date transactionScheduleDate;
+	
+	@ApiModelProperty(notes="the interval between the submit and the scheduled days")
 	private Integer daysInterval;
 	
 	/**
@@ -97,7 +132,7 @@ public class Transaction {
 	/**
 	 * @param user the user to set
 	 */
-	private void setUser(User user) {
+	public void setUser(User user) {
 		this.user = user;
 	}
 
@@ -111,7 +146,7 @@ public class Transaction {
 	/**
 	 * @param sourceAccount the sourceAccount to set
 	 */
-	private void setSourceAccount(BankAccount sourceAccount) {
+	public void setSourceAccount(BankAccount sourceAccount) {
 		this.sourceAccount = sourceAccount;
 	}
 
@@ -125,7 +160,7 @@ public class Transaction {
 	/**
 	 * @param destinationAccount the destinationAccount to set
 	 */
-	private void setDestinationAccount(BankAccount destinationAccount) {
+	public void setDestinationAccount(BankAccount destinationAccount) {
 		this.destinationAccount = destinationAccount;
 	}
 
@@ -153,28 +188,29 @@ public class Transaction {
 	/**
 	 * @param transactionValue the transactionValue to set
 	 */
-	private void setTransactionValue(BigDecimal transactionValue) {
+	public void setTransactionValue(BigDecimal transactionValue) {
 		this.transactionValue = transactionValue;
 	}
 
 	/**
 	 * @return the transactionDate
 	 */
-	public LocalDate getTransactionSubmitDate() {
-		return transactionSubmitDate;
+	public Date getTransactionSubmitDate() {
+		return this.transactionSubmitDate;
 	}
 
 	/**
 	 * @param transactionDate the transactionDate to set
 	 */
-	private void setTransactionSubmitDate(LocalDate transactionDate) {
-		this.transactionSubmitDate = transactionDate;
+	public void setTransactionSubmitDate(LocalDate transactionDate) {
+		LocalDateConverterUtil converterUtil = new LocalDateConverterUtil();
+		this.transactionSubmitDate = converterUtil.convertToDatabaseColumn(transactionDate);
 	}
 
 	/**
 	 * @return the transactionScheduleDate
 	 */
-	public LocalDate getTransactionScheduleDate() {
+	public Date getTransactionScheduleDate() {
 		return transactionScheduleDate;
 	}
 
@@ -182,14 +218,30 @@ public class Transaction {
 	 * @param transactionScheduleDate the transactionScheduleDate to set
 	 */
 	public void setTransactionScheduleDate(LocalDate transactionScheduleDate) {
-		this.transactionScheduleDate = transactionScheduleDate;
+		LocalDateConverterUtil converterUtil = new LocalDateConverterUtil();
+		this.transactionScheduleDate = converterUtil.convertToDatabaseColumn(transactionScheduleDate);
 	}
 	
-	private void setIntervalDays() {
-		this.daysInterval = this.getTransactionSubmitDate().compareTo(getTransactionScheduleDate());
+	public void setIntervalDays() {
+		LocalDateConverterUtil converterUtil = new LocalDateConverterUtil();
+		this.daysInterval = converterUtil.getDifferneceInDaysBetweenTwoDates(getTransactionSubmitDate(), getTransactionScheduleDate()).intValue();
 	}
 	
 	public Integer getIntervalDays() {
 		return this.daysInterval;
+	}
+
+	/**
+	 * @return the paidTransactionTax
+	 */
+	public BigDecimal getPaidTransactionTax() {
+		return paidTransactionTax;
+	}
+
+	/**
+	 * @param paidTransactionTax the paidTransactionTax to set
+	 */
+	public void setPaidTransactionTax(BigDecimal paidTransactionTax) {
+		this.paidTransactionTax = paidTransactionTax;
 	}
 }

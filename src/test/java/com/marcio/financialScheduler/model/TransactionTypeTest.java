@@ -26,7 +26,7 @@ class TransactionTypeTest {
 	 */
 	@BeforeAll
 	static void setUp() {
-		transactionType = new TransactionType("New type", "10-20", new BigDecimal(12.0), new BigDecimal(12.0), "Description of a new type", null, null);
+		transactionType = new TransactionType("New type", "10-20", new BigDecimal(12.0), false, new BigDecimal(12.0), false, "Description of a new type", null, null);
 	}
 
 	/**
@@ -146,8 +146,8 @@ class TransactionTypeTest {
 	 */
 	@Test
 	void testCheckTransactionRulesWithoutEndDateShouldReturnFalse() {
-		TransactionType transactionType = new TransactionType("New type", "10-", new BigDecimal(12.0),
-				new BigDecimal(12.0), "Description of a new type", null, new BigDecimal(100.000).setScale(3, RoundingMode.FLOOR));
+		TransactionType transactionType = new TransactionType("New type", "10-", new BigDecimal(12.0), false,
+				new BigDecimal(12.0), false, "Description of a new type", null, new BigDecimal(100.000).setScale(3, RoundingMode.FLOOR));
 		assertFalse(transactionType.checkTransactionRules(9, new BigDecimal(50.00).setScale(3, RoundingMode.FLOOR)));
 	}
 	
@@ -156,8 +156,29 @@ class TransactionTypeTest {
 	 */
 	@Test
 	void testCheckTransactionRulesWithoutEndDateShouldReturnTrue() {
-		TransactionType transactionType = new TransactionType("New type", "10-", new BigDecimal(12.0),
-				new BigDecimal(12.0), "Description of a new type", null, new BigDecimal(100.000).setScale(3, RoundingMode.FLOOR));
+		TransactionType transactionType = new TransactionType("New type", "10-", new BigDecimal(12.0), false,
+				new BigDecimal(12.0), false, "Description of a new type", null, new BigDecimal(100.000).setScale(3, RoundingMode.FLOOR));
 		assertTrue(transactionType.checkTransactionRules(11, new BigDecimal(50.00).setScale(3, RoundingMode.FLOOR)));
+	}
+	
+	/**
+	 * Test method for {@link com.marcio.financialScheduler.model.TransactionType#isValid()}.
+	 */
+	@Test
+	void testCheckTransactionIsValidShouldReturnTrue() {
+		TransactionType transactionType = new TransactionType("New type", "10-", new BigDecimal(12.0), false,
+				new BigDecimal(12.0), false,"Description of a new type", null, new BigDecimal(100.000).setScale(3, RoundingMode.FLOOR));
+		transactionType.setId(0L);
+		assertTrue(transactionType.isValid());
+	}
+	
+	/**
+	 * Test method for {@link com.marcio.financialScheduler.model.TransactionType#isValid()}.
+	 */
+	@Test
+	void testCheckTransactionIsValidShouldReturnFalse() {
+		TransactionType transactionType = new TransactionType("New type", "10-", new BigDecimal(12.0), false,
+				new BigDecimal(12.0), false, "Description of a new type", null, new BigDecimal(100.000).setScale(3, RoundingMode.FLOOR));
+		assertFalse(transactionType.isValid());
 	}
 }

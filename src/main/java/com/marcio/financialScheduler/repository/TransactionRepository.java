@@ -3,85 +3,62 @@
  */
 package com.marcio.financialScheduler.repository;
 
-import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.Repository;
+import org.springframework.data.repository.CrudRepository;
 
+import com.marcio.financialScheduler.model.BankAccount;
 import com.marcio.financialScheduler.model.Transaction;
+import com.marcio.financialScheduler.model.TransactionType;
+import com.marcio.financialScheduler.model.User;
 
 /**
  * This is a repository to work with and persist {@link Transaction} class
  * @author marcio
  *
  */
-public interface TransactionRepository extends Repository<Transaction, Long>{
+public interface TransactionRepository extends CrudRepository<Transaction, Long> {
 	
 	/**
-	 * 
-	 * @param id
-	 * @return
+	 * Use this method to retrieve a {@link List} of {@link Transaction} using the id of the owner {@link User}
+	 * @param userId a {@link Long} with the user id
+	 * @return a {@link List} of {@link Transaction}
 	 */
-	public Transaction getById(Long id);
+	public List<Transaction> findByUser_id(Long userId);
 	
 	/**
-	 * 
-	 * @param userId
-	 * @return
+	 * Use this method to retrieve a {@link List} od {@link Transaction} based on source account id
+	 * @param sourceAccountId a {@link Long} with the {@link BankAccount} id
+	 * @return a {@link List} of {@link Transaction}
 	 */
-	@Query(value="select count t.* from transaction t "
-			+ "where t.user_id = %?1% order by t.user_id \n#pageable\n",
-			nativeQuery=true)
-	public List<Transaction> findByUser(Long userId);
+	public List<Transaction> findBySourceAccount_id(Long sourceAccountId);
 	
 	/**
-	 * 
-	 * @param sourceAccountId
-	 * @return
+	 * Use this method to retrieve a {@link List} od {@link Transaction} based on the destination account id
+	 * @param destinationAccountId a {@link Long} with the {@link BankAccount} id
+	 * @return a {@link List} of {@link Transaction}
 	 */
-	@Query(value="select count t.* from transaction t "
-			+ "where t.source_account = %?1% order by t.user_id \n#pageable\n",
-			nativeQuery=true)
-	public List<Transaction> findBySourceAccount(Long sourceAccountId);
+	public List<Transaction> findByDestinationAccount_id(Long destinationAccountId);
 	
 	/**
-	 * 
-	 * @param destinationAccountId
-	 * @return
+	 * Use this method to retrieve a {@link List} od {@link Transaction} based on the type of the transaction
+	 * @param transactionTypeId a {@link Long} with the {@link TransactionType} id
+	 * @return a {@link List} of {@link Transaction}
 	 */
-	@Query(value="select count t.* from transaction t "
-			+ "where t.dest_account = %?1% order by t.user_id \n#pageable\n",
-			nativeQuery=true)
-	public List<Transaction> findByDestinationAccount(Long destinationAccountId);
+	public List<Transaction> findByTransactionType_id(Long transactionTypeId);
 	
 	/**
-	 * 
-	 * @param transactionTypeId
-	 * @return
+	 * Use this method to retrieve a {@link List} of {@link Transaction} based upon the Transaction submit date
+	 * @param transactionDate  A {@link Date} with the submit date
+	 * @return a {@link List} of {@link Transaction}
 	 */
-	@Query(value="select count t.* from transaction t "
-			+ "where t.transaction_type_id = %?1% order by t.transaction_type_id \n#pageable\n",
-			nativeQuery=true)
-	public List<Transaction> findByTransactionType(Long transactionTypeId);
+	public List<Transaction> findByTransactionSubmitDate(Date transactionSubmitDate);
 	
 	/**
-	 * 
-	 * @param transactionDate
-	 * @return
+	 * Use this method to retrieve a {@link List} of {@link Transaction} based upon the Transaction schedule date
+	 * @param transactionDate A {@link Date} with the schedule date
+	 * @return a {@link List} of {@link Transaction}
 	 */
-	@Query(value="select count t.* from transaction t "
-			+ "where t.submit_date = %?1% order by t.submit_date \n#pageable\n",
-			nativeQuery=true)
-	public List<Transaction> findByTransactionSubmitDate(LocalDate transactionSubmitDate);
-	
-	/**
-	 * 
-	 * @param transactionDate
-	 * @return
-	 */
-	@Query(value="select count t.* from transaction t "
-			+ "where t.schedule_date = %?1% order by t.schedule_date \n#pageable\n",
-			nativeQuery=true)
-	public List<Transaction> findByTransactionSchefuleDate(LocalDate transactionScheculeDate);
+	public List<Transaction> findByTransactionScheduleDate(Date transactionScheculeDate);
 }

@@ -62,6 +62,7 @@ class BankAccountTest {
 	/**
 	 * Test method for {@link com.marcio.financialScheduler.model.BankAccount#getUser()}.
 	 */
+	@Test
 	void testGetUser() {
 		assertNotNull(bankAccount.getUser());
 	}

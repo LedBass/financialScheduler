@@ -53,4 +53,30 @@ class UserTest {
 		User user = new User(0L, "name");
 		assertTrue(user.isValid());
 	}
+	
+	/**
+	 * Test method for {@link com.marcio.financialScheduler.model.User#isValid()}
+	 */
+	@Test
+	void testIsValidShouldReturnFalseWithEmptyName() {
+		User user = new User(0L, "");
+		assertFalse(user.isValid());
+	}
+	
+	/**
+	 * Test method for {@link com.marcio.financialScheduler.model.User#isValid()}
+	 */
+	@Test
+	void testIsValidShouldReturnFalseWithNullName() {
+		User user = new User(0L, null);
+		assertFalse(user.isValid());
+	}
+	
+	/**
+	 * Test method for {@link com.marcio.financialScheduler.model.User#isValid()}
+	 */
+	@Test
+	void testIsValidShouldReturnFalseWithEmptyInstance() {
+		assertFalse(new User().isValid());
+	}
 }

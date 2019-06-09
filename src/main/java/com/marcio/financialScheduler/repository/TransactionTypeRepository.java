@@ -3,7 +3,7 @@
  */
 package com.marcio.financialScheduler.repository;
 
-import org.springframework.data.repository.Repository;
+import org.springframework.data.repository.CrudRepository;
 
 import com.marcio.financialScheduler.model.TransactionType;
 
@@ -12,8 +12,6 @@ import com.marcio.financialScheduler.model.TransactionType;
  * @author marcio
  *
  */
-public interface TransactionTypeRepository extends Repository<TransactionType, Long> {
-	public TransactionType getById(Long id);
-	
+public interface TransactionTypeRepository extends CrudRepository<TransactionType, Long> {
 	public TransactionType getByTransactionType(String type);
 }

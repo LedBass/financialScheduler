@@ -27,13 +27,13 @@ class TransactionTest {
 		User user = new User(0L, "Name");
 		BankAccount sourceAccount = new BankAccount(0L, new BigDecimal(100.00).setScale(3, RoundingMode.FLOOR), user);
 		BankAccount destinationAccount = new BankAccount(1L, new BigDecimal(100.00).setScale(3, RoundingMode.FLOOR), null);
-		TransactionType transactionType = new TransactionType("Transaction name", "10-20", new BigDecimal(12.0), new BigDecimal(12.0), "Transaction description", null, null);
+		TransactionType transactionType = new TransactionType("Transaction name", "10-20", new BigDecimal(12.0), false, new BigDecimal(12.0), false, "Transaction description", null, null);
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 		LocalDate transactionSubmitDate = LocalDate.parse("06/06/2019", formatter);
 		LocalDate transactionScheduleDate = LocalDate.parse("06/06/2019", formatter);
 		
-		
 		transaction = new Transaction(sourceAccount.getUser(), sourceAccount, destinationAccount, transactionType, new BigDecimal(50.00).setScale(3, RoundingMode.FLOOR), transactionSubmitDate, transactionScheduleDate);
+		transaction.setPaidTransactionTax(new BigDecimal(0.50).setScale(3, RoundingMode.FLOOR));
 	}
 	
 	/**
@@ -91,6 +91,14 @@ class TransactionTest {
 	@Test
 	void testGetTransactionDate() {
 		assertNotNull(transaction.getTransactionSubmitDate());
+	}
+	
+	/**
+	 * Test method for {@link com.marcio.financialScheduler.model.Transaction#getTransactionSubmitDate()}.
+	 */
+	@Test
+	void testGetPaidTransactionTax() {
+		assertNotNull(transaction.getPaidTransactionTax());
 	}
 	
 	/**
