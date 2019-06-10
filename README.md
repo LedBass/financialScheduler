@@ -26,6 +26,7 @@ To access the database manager, open your browser and insert the following URL:
 /h2_console
 
 Login: sa
+
 leave password field in blanck
 
 from there, you can make queries once the app is up and running.
