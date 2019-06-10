@@ -22,4 +22,12 @@ http://localhost:8080/swagger-ui.html
 
 From there, you can see the basic information stored and add more.
 
+To access the database manager, open your browser and insert the following URL:
+/h2_console
+
+Login: sa
+leave password field in blanck
+
+from there, you can make queries once the app is up and running.
+
 To be done: create a simple web view for this app
