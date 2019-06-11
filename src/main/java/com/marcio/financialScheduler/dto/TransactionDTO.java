@@ -8,6 +8,8 @@ import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.Date;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import com.marcio.financialScheduler.util.LocalDateConverterUtil;
 
 import io.swagger.annotations.ApiModelProperty;
@@ -24,6 +26,7 @@ public class TransactionDTO {
 	@ApiModelProperty(notes="The destination account id")
 	private Long destinationAccountId;
 	@ApiModelProperty(notes="The date that this transaction will be realized")
+	@DateTimeFormat(iso=DateTimeFormat.ISO.DATE)
 	private Date scheduleDate;
 	@ApiModelProperty(notes="The value of the transaction")
 	private String transactionValue;
@@ -44,6 +47,22 @@ public class TransactionDTO {
 		this.setSourceAccountId(sourceAccountId);
 		this.setDestinationAccountId(destinationAccountId);
 		this.setScheduleDate(scheduleDate);
+		this.setTransactionValue(transactionValue);
+	}
+	
+	/**
+	 * Class constructor
+	 * @param sourceAccountId a {@link Long} with the source account id
+	 * @param destinationAccountId a {@link Long} with the destination account id
+	 * @param scheduleDate a {@link String} with the day that the operation will be realized
+	 * @param transactionValue a {@link String} with the transaction value
+	 */
+	public TransactionDTO(Long sourceAccountId, Long destinationAccountId, String scheduleDate, String transactionValue) {
+		this.setSourceAccountId(sourceAccountId);
+		this.setDestinationAccountId(destinationAccountId);
+		LocalDate date = LocalDate.parse(scheduleDate);
+		LocalDateConverterUtil converterUtil = new LocalDateConverterUtil();
+		this.setScheduleDate(converterUtil.convertToDatabaseColumn(date));
 		this.setTransactionValue(transactionValue);
 	}
 	

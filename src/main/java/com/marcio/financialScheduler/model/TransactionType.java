@@ -259,7 +259,7 @@ public class TransactionType implements Serializable {
 			transactionValueRule = (diference <= 0 ? true : false);
 			
 		} else if (this.getMinimalTransactionValue() != null) {
-			diference = this.getMinimalTransactionValue().compareTo(transactionValue);
+			diference = transactionValue.compareTo(this.getMinimalTransactionValue());
 			transactionValueRule = (diference >= 0 ? true : false);
 			
 		}
