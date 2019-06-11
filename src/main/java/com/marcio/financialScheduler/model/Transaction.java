@@ -18,6 +18,8 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.Digits;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.marcio.financialScheduler.util.LocalDateConverterUtil;
 
@@ -72,10 +74,12 @@ public class Transaction implements Serializable {
 	
 	@Temporal(TemporalType.TIMESTAMP)
 	@ApiModelProperty(notes="The day of the submit of the transaction")
+	@DateTimeFormat(iso=DateTimeFormat.ISO.DATE)
 	private Date transactionSubmitDate;
 	
 	@Temporal(TemporalType.TIMESTAMP)
 	@ApiModelProperty(notes="The day that the transaction were scheduled")
+	@DateTimeFormat(iso=DateTimeFormat.ISO.DATE)
 	private Date transactionScheduleDate;
 	
 	@ApiModelProperty(notes="the interval between the submit and the scheduled days")
