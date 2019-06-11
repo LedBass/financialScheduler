@@ -21,13 +21,19 @@ But if you want to make sure that everything is sounding, you can run all the te
 
 mvn clean install
 
+To access the web interface of the app, just access
+
+http://localhost:8080/
+
 To access the API of the application open your browser and insert the following URL:
+
 http://localhost:8080/swagger-ui.html
 
 From there, you can see the basic information stored and add more.
 
 To access the database manager, open your browser and insert the following URL:
-/h2_console
+
+http://localhost:8080/h2_console
 
 Login: sa
 
