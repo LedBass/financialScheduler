@@ -17,6 +17,10 @@ If you have those installed in your system, simple git clone this repository and
 
 mvn spring-boot:run
 
+But if you want to make sure that everything is sounding, you can run all the test cases by runinng
+
+mvn clean install
+
 To access the API of the application open your browser and insert the following URL:
 http://localhost:8080/swagger-ui.html
 
@@ -30,5 +34,3 @@ Login: sa
 leave password field in blanck
 
 from there, you can make queries once the app is up and running.
-
-To be done: create a simple web view for this app
